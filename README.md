@@ -125,4 +125,4 @@ Figure 8: The time evolution of the x value with the ESN neural network
 
 ## Conclusion
 
-The order in which the neural network perform the **best to worst** is the **feed-forward, RNN, LSTM, and echo state network**. Therefore, the feed-forward is best in performing time evolution of the x value and doing future state prediction. By applying the training data set with different rhos, we can test the future state prediction with another set of rhos. 
+The order in which the neural network perform the **best to worst** is the **feed-forward, RNN, LSTM, and echo state network**. Therefore, the feed-forward is best in performing time evolution of the x value and doing future state prediction but since the resulting testing loss can be slightly different, the feed-forward and the RNN can be both the best. By applying the training data set with different rhos, we can test the future state prediction with another set of rhos. 
