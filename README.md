@@ -20,6 +20,79 @@ The reason I am passing only the x value instead of the 3D space is because I wa
 
 Next, I designed the four neural network architectures so that it can take in the x value. In Figure 1, we can see the architecture of the feedforward neural network. We use three different activation functions which is logsig, radbas, and purelin. Figure 2 shows the architecture of the LSTM. Figure 3 shows the architecture of the RNN. Finally, Figure 4 shows the architecture of the echo state neural networks. There were some issues with the coding process of the echo state neural network. However, the resulting code works and outputs and answer that is similar to the grounded truth. 
 
+```python
+# Define the neural network model
+class ForecastNet(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(ForecastNet, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        return x
+```
+
+Figure 1: The architecture of the feed forward neural network
+
+```python
+# Define the LSTM model
+class ForecastLSTM(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(ForecastLSTM, self).__init__()
+        self.hidden_size = hidden_size
+        self.lstm = nn.LSTM(input_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        _, (h_n, _) = self.lstm(x)
+        x = self.fc(h_n.squeeze(0))
+        return x
+```
+
+Figure 2: The architecture of the LSTM neural network
+
+```python
+# Define the RNN model
+class ForecastRNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(ForecastRNN, self).__init__()
+        self.hidden_size = hidden_size
+        self.rnn = nn.RNN(input_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        _, h_n = self.rnn(x)
+        x = self.fc(h_n.squeeze(0))
+        return x
+```
+
+Figure 3: The architecture of the RNN neural network
+
+```python
+# Define the Echo State Network model
+class ESN(nn.Module):
+    def __init__(self, input_size, reservoir_size, output_size, spectral_radius=0.9):
+        super(ESN, self).__init__()
+        self.reservoir = nn.Linear(reservoir_size, reservoir_size, bias=False)
+        self.input_weights = nn.Linear(input_size, reservoir_size, bias=False)
+        self.output = nn.Linear(reservoir_size, output_size)
+        self.activation = nn.Tanh()
+        self.spectral_radius = spectral_radius
+
+    def forward(self, x):
+        x = self.input_weights(x)
+        reservoir_states = torch.zeros(x.size(0), self.reservoir.weight.size(1)).to(x.device)
+        for t in range(x.size(1)):
+            reservoir_states = self.activation(x[:, t, :] + torch.matmul(reservoir_states, self.reservoir.weight.t()))
+        output = self.output(reservoir_states)
+        return output
+```
+
+Figure 4: the architecture of the ESN neural network
 The four neural networks have the same training dataset and testing dataset with the same batch size. The input size is set to 1 and the output is also set to 1. The hidden size for the hidden layers are set to 64. The learning rate is set to 0.001 and the number of epochs is set to 100. For the loss function, I set it up as mean square error loss and the optimizer as Adam. We want to have all the neural networks have the same basic parameters to be able to compare the resulting predictions accurately. The coding for the epoch training and the testing are similar to each neural network.
 
 Finally, we print the resulting time evolutions of the x value. We input the test loader into the models and compare the resulting predictions to the test data to see time evolution of x. 
