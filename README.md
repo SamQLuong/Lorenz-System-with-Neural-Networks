@@ -101,11 +101,27 @@ Finally, we print the resulting time evolutions of the x value. We input the tes
 
 In Figure 5, we can see that the feed forward model has a similar resulting time evolution. The model matches almost exactly as the grounded truth. The final testing loss is around **0.1899**.  
 
+![Figure 5](https://github.com/SamQLuong/Lorenz-System-with-Neural-Networks/blob/main/Lorenz%20Time%20Series%20FFNN.png)
+
+Figure 5: The time evolution of the x value with the feed forward neural network.
+
 In Figure 6, we can see that the LSTM model also has a very similar resulting time evolution to the test data. The final testing loss is around **0.2096**. We can see a that the model isn’t exactly as the grounded truth as some of the peaks is not met. 
+
+![Figure 6](https://github.com/SamQLuong/Lorenz-System-with-Neural-Networks/blob/main/Lorenz%20Time%20Series%20LSTM.png)
+
+Figure 6: The time evolution of the x value with the LSTM neural network
 
 In Figure 7, we can see that the RNN model has a similar result as the LSTM model. The final testing loss is around **0.1979**. The loss is slightly less than the LSTM. The model doesn’t meet exactly as the grounded truth but is a lot better than the LSTM. 
 
+![Figure 7](https://github.com/SamQLuong/Lorenz-System-with-Neural-Networks/blob/main/Lorenz%20Time%20Series%20RNN.png)
+
+Figure 7: The time evolution of the x value with the RNN neural network
+
 Lastly, in Figure 8, the echo state network has a similar result to the LSTM because the fial testing loss is around **0.2152**. 
+
+![Figure 8](https://github.com/SamQLuong/Lorenz-System-with-Neural-Networks/blob/main/Lorenz%20Time%20Series%20ESN.png)
+
+Figure 8: The time evolution of the x value with the ESN neural network
 
 ## Conclusion
 
